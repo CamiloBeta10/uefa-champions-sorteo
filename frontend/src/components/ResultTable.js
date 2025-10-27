@@ -1,49 +1,57 @@
-import React, { useState } from 'react';
-import '../styles/ChampionsTheme.css';
+import React, { useEffect, useState } from "react";
 
-const ResultTable = () => {
-  const [matches] = useState([]);
-
-  if (matches.length === 0) {
-    return (
-      <div className="empty-state" role="status" aria-live="polite">
-        <div className="empty-state-content">
-          <div className="champions-ball" aria-hidden="true"></div>
-          <h2 className="empty-title">Sorteo Pendiente</h2>
-          <p className="empty-message">Aún no se han realizado sorteos para la próxima fase.</p>
-          <p className="empty-subtitle">¡Regístrate para participar en el próximo sorteo!</p>
-        </div>
-      </div>
-    );
-  }
+export default function ResultTable({ refresh }) {
+  const [resultados, setResultados] = useState([]);
+  useEffect(() => {
+    fetch("http://localhost:4000/api/resultados")
+      .then((res) => res.json())
+      .then(setResultados);
+  }, [refresh]);
 
   return (
-    <div className="result-table results-container">
-      <h2 className="results-title">Próximos Encuentros</h2>
-      <div className="table-container results-grid">
-        <table className="champions-table" style={{ width: '100%', borderCollapse: 'collapse' }}>
-          <thead>
-            <tr>
-              <th>Equipo Local</th>
-              <th>Equipo Visitante</th>
-              <th>Fecha</th>
-              <th>Hora</th>
+    <div className="mt-8 bg-white/10 rounded-xl p-6 shadow-lg w-full max-w-3xl">
+      {/* Estilos en línea para la tabla champions-table */}
+      <style>{`
+        .champions-table {
+          border-collapse: collapse;
+          width: 100%;
+          background: rgba(34, 46, 64, 0.3);
+          font-size: 1rem;
+        }
+        .champions-table th,
+        .champions-table td {
+          border: 2px solid #c5a063;
+          padding: 0.75rem 1rem;
+          text-align: left;
+        }
+        .champions-table th {
+          background: #00235e;
+          color: #c5a063;
+          font-weight: bold;
+        }
+        .champions-table tr:nth-child(even) {
+          background: rgba(255,255,255,0.05);
+        }
+      `}</style>
+      <h3 className="text-championsGold text-xl font-bold mb-4">Resultados</h3>
+      <table className="champions-table w-full table-auto text-white">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Equipo</th>
+            <th>Fecha</th>
+          </tr>
+        </thead>
+        <tbody>
+          {resultados.map((r) => (
+            <tr key={r.id}>
+              <td>{r.nombre} {r.apellido}</td>
+              <td>{r.equipo}</td>
+              <td>{new Date(r.fecha).toLocaleString()}</td>
             </tr>
-          </thead>
-          <tbody>
-            {matches.map((match, index) => (
-              <tr key={index}>
-                <td>{match.team1}</td>
-                <td>{match.team2}</td>
-                <td>{match.date}</td>
-                <td>{match.time}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
-};
-
-export default ResultTable;
+}
