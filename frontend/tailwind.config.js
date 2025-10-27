@@ -7,6 +7,11 @@ module.exports = {
   theme: {
     extend: {
       animation: {
+          colors: {
+        championsBlue: "#1C2341",
+        championsGold: "#FFD700",
+        championsSilver: "#A9A9A9"
+        },
         'spin-slow': 'spin 3s linear infinite',
       },
     },

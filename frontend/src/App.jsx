@@ -1,27 +1,28 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from "react";
+import MainForm from "./components/MainForm";
+import ResultTable from "./components/ResultTable";
+import uefaLogo from "./assets/logos/uefa-logo.png";
+import championsBg from "./assets/logos/champions-bg.jpg";
 
 function App() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-500 to-purple-600 flex items-center justify-center">
-      <div className="bg-white p-8 rounded-lg shadow-xl">
-        <header className="text-center">
-          <img src={logo} className="w-32 h-32 mx-auto animate-spin-slow" alt="logo" />
-          <p className="mt-4 text-gray-700 text-lg">
-            Edit <code className="bg-gray-100 px-2 py-1 rounded">src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="mt-4 inline-block px-6 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
+    <div
+      className="min-h-screen w-full flex flex-col justify-center items-center relative"
+      style={{
+        backgroundImage: `url(${championsBg})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+      }}
+    >
+      <header className="flex items-center justify-center py-4">
+        <img src={uefaLogo} alt="UEFA Champions League" className="h-20" />
+      </header>
+      <main className="flex flex-col items-center justify-center w-full h-full">
+        <MainForm />
+        <ResultTable />
+      </main>
     </div>
   );
 }
-
 export default App;
