@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 export default function ResultTable({ refresh }) {
   const [resultados, setResultados] = useState([]);
   useEffect(() => {
-    fetch("https://uefa-champions-sorteo-backend.onrender.com/api/asignar/api/resultados")
+    fetch("https://uefa-champions-sorteo-backend.onrender.com/api/resultados")
       .then((res) => res.json())
       .then(setResultados);
   }, [refresh]);
