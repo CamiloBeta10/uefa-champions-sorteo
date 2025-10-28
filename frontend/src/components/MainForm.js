@@ -6,8 +6,59 @@ export default function MainForm({ onAsignacion }) {
   const [asignado, setAsignado] = useState(null);
   const [loading, setLoading] = useState(false);
 
+
+  const handleNombreChange = (e) => {
+    const valor = e.target.value;
+    if (/^[a-zA-Z\s]*$/.test(valor)) {
+      setNombre(valor);
+      setError("");
+    } else {
+      setError("El nombre solo puede contener letras y espacios.");
+    }
+  };
+
+  const handleApellidoChange = (e) => {
+    const valor = e.target.value;
+    if (/^[a-zA-Z\s]*$/.test(valor)) {
+      setApellido(valor);
+      setError("");
+    } else {
+      setError("El apellido solo puede contener letras y espacios.");
+    }
+  };
+
+  const puedeAsignar = async (nombre, apellido) => {
+    try {
+      const res = await fetch("https://uefa-champions-sorteo-backend.onrender.com/api/resultados");
+      const resultados = await res.json();
+      const clave = `${nombre.trim().toLowerCase()}-${apellido.trim().toLowerCase()}`;
+      const cantidad = resultados.filter(
+        r =>
+          r.nombre.trim().toLowerCase() === nombre.trim().toLowerCase() &&
+          r.apellido.trim().toLowerCase() === apellido.trim().toLowerCase()
+      ).length;
+      if (cantidad >= 2) {
+        setError("¡Este nombre y apellido ya tiene dos equipos asignados!");
+        return false;
+      }
+      return true;
+    } catch {
+      setError("No se pudo validar el nombre y apellido.");
+      return false;
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
+    if (nombre.trim() === "" || apellido.trim() === "") {
+      setError("Ambos campos son obligatorios.");
+      return;
+    }
+
+    const valido = await puedeAsignar(nombre, apellido);
+    if (!valido) return;
+
     setLoading(true);
     setAsignado(null);
     try {
@@ -18,9 +69,8 @@ export default function MainForm({ onAsignacion }) {
       });
       const data = await res.json();
       setAsignado(data);
-      if (onAsignacion) onAsignacion();
     } catch (error) {
-      alert("Error al asignar equipo");
+      setError("Error al asignar equipo");
     }
     setLoading(false);
   };
