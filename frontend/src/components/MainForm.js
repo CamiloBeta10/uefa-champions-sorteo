@@ -38,8 +38,8 @@ export default function MainForm({ onAsignacion }) {
           r.nombre.trim().toLowerCase() === nombre.trim().toLowerCase() &&
           r.apellido.trim().toLowerCase() === apellido.trim().toLowerCase()
       ).length;
-      if (cantidad >= 2) {
-        setError("¡Este nombre y apellido ya tiene dos equipos asignados!");
+      if (cantidad >= 5) {
+        setError("¡Este nombre y apellido ya tiene cinco selecciones asignadas!");
         return false;
       }
       return true;
