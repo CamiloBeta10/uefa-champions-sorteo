@@ -1,5 +1,22 @@
 import React, { useState } from "react";
 
+const PARTICIPANTES = [
+  "samuel cano",
+  "samuel duarte",
+  "samuel parra",
+  "camilo betancur",
+  "damaris cano",
+  "jhordy cano",
+  "rodolfo cano",
+  "santiago castro",
+  "juan pablo tabares",
+];
+
+const esParticipante = (nombre, apellido) => {
+  const completo = `${nombre} ${apellido}`.trim().toLowerCase().replace(/\s+/g, " ");
+  return PARTICIPANTES.includes(completo);
+};
+
 export default function MainForm({ onAsignacion }) {
   const [nombre, setNombre] = useState("");
   const [apellido, setApellido] = useState("");
@@ -54,6 +71,11 @@ export default function MainForm({ onAsignacion }) {
     setError("");
     if (nombre.trim() === "" || apellido.trim() === "") {
       setError("Ambos campos son obligatorios.");
+      return;
+    }
+
+    if (!esParticipante(nombre, apellido)) {
+      setError("El nombre y apellido ingresados no son participantes del torneo.");
       return;
     }
 
