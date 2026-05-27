@@ -10,6 +10,9 @@ const PARTICIPANTES = [
   "rodolfo cano",
   "santiago castro",
   "juan pablo tabares",
+  "jiovany gonzalez",
+  "sebastian casas",
+  "samuel lopez"
 ];
 
 const esParticipante = (nombre, apellido) => {
@@ -55,8 +58,8 @@ export default function MainForm({ onAsignacion }) {
           r.nombre.trim().toLowerCase() === nombre.trim().toLowerCase() &&
           r.apellido.trim().toLowerCase() === apellido.trim().toLowerCase()
       ).length;
-      if (cantidad >= 5) {
-        setError("¡Este nombre y apellido ya tiene cinco selecciones asignadas!");
+      if (cantidad >= 4) {
+        setError("¡Este nombre y apellido ya tiene cuatro selecciones asignadas!");
         return false;
       }
       return true;
