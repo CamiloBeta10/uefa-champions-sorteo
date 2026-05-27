@@ -4,6 +4,62 @@ const dbPath = path.join(__dirname, 'champions.db');
 
 let db;
 
+const SELECCIONES = [
+  { nombre: "Argentina", logo: "https://flagcdn.com/w160/ar.png" },
+  { nombre: "Australia", logo: "https://flagcdn.com/w160/au.png" },
+  { nombre: "Austria", logo: "https://flagcdn.com/w160/at.png" },
+  { nombre: "Belgium", logo: "https://flagcdn.com/w160/be.png" },
+  { nombre: "Bosnia & Herzegovina", logo: "https://flagcdn.com/w160/ba.png" },
+  { nombre: "Brazil", logo: "https://flagcdn.com/w160/br.png" },
+  { nombre: "Cabo Verde", logo: "https://flagcdn.com/w160/cv.png" },
+  { nombre: "Canada", logo: "https://flagcdn.com/w160/ca.png" },
+  { nombre: "Colombia", logo: "https://flagcdn.com/w160/co.png" },
+  { nombre: "Congo DR", logo: "https://flagcdn.com/w160/cd.png" },
+  { nombre: "Croatia", logo: "https://flagcdn.com/w160/hr.png" },
+  { nombre: "Czech Republic", logo: "https://flagcdn.com/w160/cz.png" },
+  { nombre: "Denmark", logo: "https://flagcdn.com/w160/dk.png" },
+  { nombre: "Ecuador", logo: "https://flagcdn.com/w160/ec.png" },
+  { nombre: "England", logo: "https://flagcdn.com/w160/gb-eng.png" },
+  { nombre: "Finland", logo: "https://flagcdn.com/w160/fi.png" },
+  { nombre: "France", logo: "https://flagcdn.com/w160/fr.png" },
+  { nombre: "Germany", logo: "https://flagcdn.com/w160/de.png" },
+  { nombre: "Ghana", logo: "https://flagcdn.com/w160/gh.png" },
+  { nombre: "Haiti", logo: "https://flagcdn.com/w160/ht.png" },
+  { nombre: "Holland", logo: "https://flagcdn.com/w160/nl.png" },
+  { nombre: "Hungary", logo: "https://flagcdn.com/w160/hu.png" },
+  { nombre: "Iceland", logo: "https://flagcdn.com/w160/is.png" },
+  { nombre: "Indonesia", logo: "https://flagcdn.com/w160/id.png" },
+  { nombre: "Italy", logo: "https://flagcdn.com/w160/it.png" },
+  { nombre: "Ivory Coast", logo: "https://flagcdn.com/w160/ci.png" },
+  { nombre: "Korea Republic", logo: "https://flagcdn.com/w160/kr.png" },
+  { nombre: "Mexico", logo: "https://flagcdn.com/w160/mx.png" },
+  { nombre: "Morocco", logo: "https://flagcdn.com/w160/ma.png" },
+  { nombre: "New Zealand", logo: "https://flagcdn.com/w160/nz.png" },
+  { nombre: "Northern Ireland", logo: "https://flagcdn.com/w160/gb-nir.png" },
+  { nombre: "Norway", logo: "https://flagcdn.com/w160/no.png" },
+  { nombre: "Panama", logo: "https://flagcdn.com/w160/pa.png" },
+  { nombre: "Paraguay", logo: "https://flagcdn.com/w160/py.png" },
+  { nombre: "Poland", logo: "https://flagcdn.com/w160/pl.png" },
+  { nombre: "Portugal", logo: "https://flagcdn.com/w160/pt.png" },
+  { nombre: "Qatar", logo: "https://flagcdn.com/w160/qa.png" },
+  { nombre: "Republic of Ireland", logo: "https://flagcdn.com/w160/ie.png" },
+  { nombre: "Romania", logo: "https://flagcdn.com/w160/ro.png" },
+  { nombre: "Saudi Arabia", logo: "https://flagcdn.com/w160/sa.png" },
+  { nombre: "Scotland", logo: "https://flagcdn.com/w160/gb-sct.png" },
+  { nombre: "Senegal", logo: "https://flagcdn.com/w160/sn.png" },
+  { nombre: "South Africa", logo: "https://flagcdn.com/w160/za.png" },
+  { nombre: "Spain", logo: "https://flagcdn.com/w160/es.png" },
+  { nombre: "Sweden", logo: "https://flagcdn.com/w160/se.png" },
+  { nombre: "Switzerland", logo: "https://flagcdn.com/w160/ch.png" },
+  { nombre: "Tunisia", logo: "https://flagcdn.com/w160/tn.png" },
+  { nombre: "Turkiye", logo: "https://flagcdn.com/w160/tr.png" },
+  { nombre: "Ukraine", logo: "https://flagcdn.com/w160/ua.png" },
+  { nombre: "United States", logo: "https://flagcdn.com/w160/us.png" },
+  { nombre: "Uruguay", logo: "https://flagcdn.com/w160/uy.png" },
+  { nombre: "Uzbekistan", logo: "https://flagcdn.com/w160/uz.png" },
+  { nombre: "Wales", logo: "https://flagcdn.com/w160/gb-wls.png" },
+];
+
 function initDB() {
   db = new sqlite3.Database(dbPath);
   db.serialize(() => {
@@ -19,48 +75,26 @@ function initDB() {
       equipo TEXT,
       fecha TEXT
     )`);
-    // Inserta equipos si la tabla está vacía
-    db.all("SELECT count(*) AS count FROM equipos", [], (err, rows) => {
-      if (rows[0].count === 0) {
-        const equipos = [
-          { nombre: "Real Madrid", logo: "/assets/logos/real-madrid.png" },
-          { nombre: "Barcelona", logo: "/assets/logos/Barcelona-logo.png" },
-          { nombre: "Manchester City", logo: "/assets/logos/Manchester_City.png" },
-          { nombre: "Liverpool", logo: "/assets/logos/liverpool.png" },
-          { nombre: "AC Milan", logo: "/assets/logos/AC_Milán.png" },
-          { nombre: "Bayer Munchen", logo: "/assets/logos/Bayern_München_logo.png" },
-          { nombre: "Ajax", logo: "/assets/logos/Ajax-logo.png" },
-          { nombre: "Arsenal", logo: "/assets/logos/Arsenal-logo.png" },
-          { nombre: "As Monaco", logo: "/assets/logos/AsMonaco-logo.png" },
-          { nombre: "Atletico Madric", logo: "/assets/logos/AtleticoMadrid-logo.png" },
-          { nombre: "Bayer Leverkusen", logo: "/assets/logos/bayer-leverkusen-logo.png" },
-          { nombre: "Benfica", logo: "/assets/logos/Benfica-logo.png" },
-          { nombre: "Borussia Dortmund", logo: "/assets/logos/Borussia_Dortmund_logo.png" },
-          { nombre: "Chelsea", logo: "/assets/logos/Chelsea-logo.png" },
-          { nombre: "Crystal Palace", logo: "/assets/logos/Crystal_Palace_FC_logo.png" },
-          { nombre: "Eintracht Frankfurt", logo: "assets/logos/Eintracht-Frankfurt-logo.png" },
-          { nombre: "FC Porto", logo: "/assets/logos/FC_Porto.png" },
-          { nombre: "Fenerbache", logo: "/assets/logos/Fenerbahce-Logo.png" },
-          { nombre: "Galatasaray", logo: "/assets/logos/Galatasaray-logo.png" },
-          { nombre: "Inter de Milan", logo: "/assets/logos/InterMilan-logo.png" },
-          { nombre: "Juventus", logo: "/assets/logos/Juventus-logo.png" },
-          { nombre: "Leizip", logo: "/assets/logos/Leizip-logo.png" },
-          { nombre: "Olympique Lyon", logo: "/assets/logos/lyon.png" },
-          { nombre: "Manchester United", logo: "/assets/logos/Manchester-United.png" },
-          { nombre: "Newcastle United", logo: "/assets/logos/Newcastle_United_Logo.png" },
-          { nombre: "Olympique Marseille", logo: "/assets/logos/Olympique_Marseille_logo.webp" },
-          { nombre: "París Saint-Germain", logo: "/assets/logos/Psg-logo.png" },
-          { nombre: "Real Betis", logo: "/assets/logos/Real_Betis.png" },
-          { nombre: "Roma", logo: "/assets/logos/Roma-logo.png" },
-          { nombre: "Sevilla", logo: "/assets/logos/sevilla-logo.png" },
-          { nombre: "Napoles", logo: "/assets/logos/Napoli_logo.png" },
-          { nombre: "Totteham", logo: "/assets/logos/Totteham-logo.png" },
-          // ...otros equipos
-        ];
-        equipos.forEach(eq => {
-          db.run("INSERT INTO equipos (nombre, logo) VALUES (?, ?)", [eq.nombre, eq.logo]);
+
+    db.all("SELECT nombre FROM equipos", [], (err, rows) => {
+      if (err) return console.error(err);
+      const existentes = new Set(rows.map(r => r.nombre));
+      const esperados = new Set(SELECCIONES.map(s => s.nombre));
+      const mismos =
+        existentes.size === esperados.size &&
+        [...esperados].every(n => existentes.has(n));
+
+      if (mismos) return;
+
+      db.serialize(() => {
+        db.run("DELETE FROM equipos");
+        const stmt = db.prepare("INSERT INTO equipos (nombre, logo) VALUES (?, ?)");
+        SELECCIONES.forEach(s => stmt.run(s.nombre, s.logo));
+        stmt.finalize(err => {
+          if (err) console.error(err);
+          else console.log(`Equipos re-sembrados: ${SELECCIONES.length} selecciones del Mundial 2026.`);
         });
-      }
+      });
     });
   });
 }
