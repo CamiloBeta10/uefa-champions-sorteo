@@ -17,6 +17,8 @@ const PARTICIPANTES = [
   "rodolfo cano",
   "santiago castro",
   "juan pablo tabares",
+  "jiovany gonzalez",
+  "sebastian casas"
 ];
 
 const esParticipante = (nombre, apellido) => {
